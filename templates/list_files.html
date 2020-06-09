@@ -1,0 +1,17 @@
+<h1>Yash Bardapurkar</h1>
+<h1>1001731650</h1>
+<br>
+
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Size</th>
+	</tr>
+{% for item in result %}
+	<tr>
+		<td>{{ item["Key"] }}</td>
+		<td>{{ item["Size"] }}</td>
+	</tr>
+{% endfor %}
+</table>

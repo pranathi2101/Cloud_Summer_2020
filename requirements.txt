@@ -1,1 +1,4 @@
 Flask
+ibm_db
+requests
+xmltodict
