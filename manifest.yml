@@ -1,0 +1,4 @@
+applications:
+- name: sxpapp
+  random-route: true
+  memory: 64M
