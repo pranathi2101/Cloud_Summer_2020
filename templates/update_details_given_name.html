@@ -1,0 +1,25 @@
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="update_details_given_name" method="post">
+	<label>Enter the Name for which updation is required</label>
+	<input type="" name="name" value="">
+	<br>
+	<label>Enter the new state</label>
+	<input type="text" name="state">
+	<br>
+	<label>Enter the new caption</label>
+	<input type="text" name="caption">
+	<br>
+	<input type="submit" name="update_keyword" value="Update details">
+</form>
+
+
+<br>
+
+{% if result == 0 %}
+	<h4>No update!!! Check inputs</h4>
+{% else %}
+	<h4>Update Successful</h4>
+{% endif %}

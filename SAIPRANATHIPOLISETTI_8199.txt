@@ -1,0 +1,219 @@
+Question 5)
+@app.route('/list_pics_img', methods=["GET"])
+def list_pics_img():
+    # sending get request and saving the response as response object 
+    data = requests.get(base_url)
+    parse_dict = xmltodict.parse(data.text)
+    image_data = parse_dict["ListBucketResult"]["Contents"]
+#     
+    return render_template('list_pics_img.html', result=image_data)
+	
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<p>v.jpg</p>
+<table>
+	<tr>
+	</tr>
+
+{% for item in result %}
+	<tr>
+	
+	{% if item["Key"] == "a.jpg" %}
+		<img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{item['Key']}}  height="200px">
+	{% endif %}
+
+	</tr>
+{% endfor %}
+</table>
+Question 5 ends)
+Question 6)
+
+@app.route('/search_pic_name', methods=["GET"])
+def search_pic_name():
+    ret = [];
+    return render_template('search_pic_name.html', result=ret)
+
+
+# search by name function
+@app.route('/search_pic_name', methods=["POST"])
+def search_pic_name_name():
+    name = request.form["name"]
+
+    sql = "SELECT * FROM names WHERE PICTURE = ?"
+    stmt = ibm_db.prepare(connect.connection, sql)
+
+    ibm_db.bind_param(stmt, 1, name)
+    result = ibm_db.execute(stmt)
+
+    result_dict = ibm_db.fetch_assoc(stmt)
+    
+    print(result_dict)
+    
+    if result_dict is False:
+        result_dict = {"PICTURE":str(name), "RESULT":0}
+    else:
+        result_dict["RESULT"] = 1
+    return render_template('search_pic_name.html', result=result_dict)
+	
+	
+	
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="search_pic_name" method="post">
+	<label>Enter name of picture</label>
+	<input type="name" name="name">
+	<br>
+	<input type="submit" name="name_search" value="Search by Picture Name">
+</form>
+
+<br>
+
+{% if result["RESULT"] == 0 %}
+	<h4>No pic has been uploaded in cloud to display for Name : {{result["PICTURE"]}}</h4>
+	<p> Note: Names are case senitive </p>
+
+{% else %}
+	<p>{{ result["PICTURE"] }}</p>
+	<img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{result['PICTURE']}}  height="200px">
+{% endif %}
+
+Question 6 ends)
+
+Question 7)
+@app.route('/search_by_id', methods=["GET"])
+def search_by_id():
+    ret = [];
+    return render_template('search_by_id.html', result=ret)
+# search by name function
+@app.route('/search_by_id', methods=["POST"])
+def search_by_id_pic():
+    room = str(request.form["room"])
+    print(room)
+    if room == "":
+        print("Here")
+        result_dict = {"Room number":str(room), "RESULT":0}
+        return render_template('search_by_id.html', result=result_dict)
+
+    sql = "SELECT * FROM names WHERE ROOM = ?"
+    stmt = ibm_db.prepare(connect.connection, sql)
+
+    ibm_db.bind_param(stmt, 1, room)
+    result = ibm_db.execute(stmt)
+
+    result_dict = ibm_db.fetch_assoc(stmt)
+    print(result_dict)
+    
+    if result_dict is False:
+        result_dict = {"Room number":str(room), "RESULT":0}
+#         print(result_dict)
+    else:
+        result_dict["RESULT"] = 1
+    
+    if room is "":
+        result_dict = {"Room number":str(room), "RESULT":0}
+    return render_template('search_by_id.html', result=result_dict)
+	
+	
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="search_by_id" method="post">
+	<label>Enter ID Number</label>
+	<input type="number" name="room" value="">
+	<br>
+	<input type="submit" name="name_search" value="Search by ID">
+</form>
+
+<br>
+
+{% if result["RESULT"] == 0 %}
+	<h4>No pic has been uploaded in cloud to display for Room : {{result["Room number"]}}</h4>
+
+{% else %}
+	<p> Caption <p>
+	<p>{{ result["KEYWORDS"] }}</p>
+	<img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{result['PICTURE']}}  height="200px">
+{% endif %}
+Question 7 ends)
+
+#####
+# update_caption
+#####
+
+Question 8)
+@app.route('/update_caption', methods=["GET"])
+def update_caption():
+    ret = [];
+    return render_template('update_caption.html', result=ret)
+  
+# search by name function
+@app.route('/update_caption', methods=["POST"])
+def update_caption_name():
+    name = str(request.form["name"])        
+    keyword = str(request.form["keyword"])
+    
+    if name == "" or keyword == "":
+        result_dict = {}
+        result_dict["RESULT"]=0
+        return render_template('update_caption.html', result=result_dict)
+        
+  
+    sql = "UPDATE names SET KEYWORDS = ? WHERE  NAME=?"
+    stmt = ibm_db.prepare(connect.connection, sql)
+  
+    ibm_db.bind_param(stmt, 1, keyword)
+    ibm_db.bind_param(stmt, 2, name)
+      
+    result = ibm_db.execute(stmt)
+      
+    result = ibm_db.num_rows(stmt)
+    
+    sql = "SELECT * FROM names WHERE NAME = ?"
+    stmt = ibm_db.prepare(connect.connection, sql)
+
+    ibm_db.bind_param(stmt, 1, name)
+    result = ibm_db.execute(stmt)
+
+    result_dict = ibm_db.fetch_assoc(stmt)
+    print(result_dict)
+    
+    result_dict["RESULT"] = result
+      
+    return render_template('update_caption.html', result=result_dict)
+	
+	
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="update_caption" method="post">
+	<label>Enter the Name for which updation is required</label>
+	<input type="" name="name">
+	<br>
+	<label>Enter the new keyword</label>
+	<input type="text" name="keyword">
+	<br>
+	<input type="submit" name="update_keyword" value="Update caption">
+</form>
+
+
+<br>
+
+
+{% if result["RESULT"] == 0 %}
+	<h4>No update!!! Check inputs</h4>
+
+{% else %}
+	<p>Update Successful---New details</p>
+	<p>NAME - {{ result["NAME"] }} </p>
+	<p>CAPTION - {{ result["KEYWORDS"] }}</p>
+	<img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{result['PICTURE']}}  height="200px">
+
+
+{% endif %}
+Question 8 ends)

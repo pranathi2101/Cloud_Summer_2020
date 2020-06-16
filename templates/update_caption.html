@@ -1,0 +1,29 @@
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="update_caption" method="post">
+	<label>Enter the Name for which updation is required</label>
+	<input type="" name="name">
+	<br>
+	<label>Enter the new keyword</label>
+	<input type="text" name="keyword">
+	<br>
+	<input type="submit" name="update_keyword" value="Update caption">
+</form>
+
+
+<br>
+
+
+{% if result["RESULT"] == 0 %}
+	<h4>No update!!! Check inputs</h4>
+
+{% else %}
+	<p>Update Successful---New details</p>
+	<p>NAME - {{ result["NAME"] }} </p>
+	<p>CAPTION - {{ result["KEYWORDS"] }}</p>
+	<img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{result['PICTURE']}}  height="200px">
+
+
+{% endif %}

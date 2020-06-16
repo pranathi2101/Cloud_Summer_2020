@@ -1,0 +1,22 @@
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="add" method="post">
+	<label>Enter first number</label>
+	<input type="number" name="first" value="">
+	<br>
+	<label>Enter econd number in </label>
+	<input type="number" name="second" value="">
+	<br>
+	<input type="submit" name="update_data" value="Add Values">
+</form>
+<table>
+
+{% if result == "not valid" %}
+	<td> Check inputs!!!.. Nothing to display</td>
+{% else %}
+	<p>{{result}}</p>
+{% endif %}
+
+</table>

@@ -1,0 +1,23 @@
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="update_points" method="post">
+	<label>Enter the Name for which updation is required</label>
+	<input type="name" name="name">
+	<br>
+	<label>Enter the new points</label>
+	<input type="number" name="grade" value="">
+	<br>
+	<input type="submit" name="updat points" value="Update Point">
+</form>
+
+
+<br>
+
+{% if result == 0 %}
+	<h4>No update!!! Check inputs</h4>
+
+{% else %}
+	<h4>Update Successful</h4>
+{% endif %}

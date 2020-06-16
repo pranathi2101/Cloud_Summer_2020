@@ -1,0 +1,35 @@
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="display_details_point_room" method="post">
+	<label>Enter larger point in Range</label>
+	<input type="number" name="first" value="">
+	<br>
+	<label>Enter smaller point in Range</label>
+	<input type="number" name="second" value="">
+	<br>
+	<label>Enter room number</label>
+	<input type="number" name="room" value="">
+	<br>
+	<input type="submit" name="update_data" value="View details">
+</form>
+<table>
+
+{% if result == 0 %}
+	<td> Check inputs , all 3 inputs required!!!.. Nothing to display</td>
+{% else %}
+	{% for item in result["list"] %}
+	<tr>
+		<td>{{ item["NAME"] }}</td>
+		<td>{{ item["STATE"] }}</td>
+		{% if item["PICTURE"] != None %}
+			<td><img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{item['PICTURE']}}  height="200px"></td>
+		{% else %}
+			<td>No image to display for this name</td>
+		{% endif %}
+	</tr>
+	{% endfor %}
+{% endif %}
+
+</table>

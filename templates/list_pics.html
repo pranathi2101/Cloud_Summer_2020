@@ -1,0 +1,18 @@
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+
+<table>
+	<tr>
+		<th>Name</th>
+		<th>Size</th>
+	</tr>
+
+{% for item in result %}
+	<tr>
+		<td>{{ item["Key"] }}</td>
+		<td>{{ item["Size"] }}</td>
+	</tr>
+{% endfor %}
+</table>

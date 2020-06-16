@@ -1,0 +1,21 @@
+<h1>Sai Pranathi Polisetti</h1>
+
+<br>
+
+<p>b.jpg</p>
+<table>
+	<tr>
+	</tr>
+
+{% for item in result %}
+	<tr>
+
+	{% if item["Key"] == "b.jpg" %}
+		<img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{item['Key']}}  height="200px">
+	{% endif %}
+
+	</tr>
+{% endfor %}
+</table>
+
+<h1>1001728199</h1>

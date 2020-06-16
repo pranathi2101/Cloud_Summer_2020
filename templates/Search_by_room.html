@@ -1,0 +1,20 @@
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="search_room_number" method="post">
+	<label>Enter Room Number</label>
+	<input type="number" name="room" value="">
+	<br>
+	<input type="submit" name="name_search" value="Search by Room">
+</form>
+
+<br>
+
+{% if result["RESULT"] == 0 %}
+	<h4>No pic has been uploaded in cloud to display for Room : {{result["Room number"]}}</h4>
+
+{% else %}
+	<p>{{ result["NAME"] }}</p>
+	<img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{result['PICTURE']}}  height="200px">
+{% endif %}

@@ -1,0 +1,21 @@
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="search_name" method="post">
+	<label>Enter name</label>
+	<input type="name" name="name">
+	<br>
+	<input type="submit" name="name_search" value="Search by Name">
+</form>
+
+<br>
+
+{% if result["RESULT"] == 0 %}
+	<h4>No pic has been uploaded in cloud to display for Name : {{result["NAME"]}}</h4>
+	<p> Note: Names are case senitive </p>
+
+{% else %}
+	<p>{{ result["NAME"] }}</p>
+	<img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{result['PICTURE']}}  height="200px">
+{% endif %}

@@ -54,6 +54,11 @@ def search_by_room():
 	result_dict = ibm_db.fetch_assoc(stmt)
 	print(result_dict)
 	
+	if result_dict is False:
+		 result_dict = 0
+		 
+		 
+	
 	return render_template('room_search.html', result=result_dict)
 
 @app.route('/update', methods=["GET"])

@@ -1,0 +1,300 @@
+
+Name: Sai Pranathi Polisetti
+Last 4 digits ID: 8199
+
+CSE 6331, Cloud Computing					
+
+
+Quiz Q1, 6.00, Summer 2020   (c) DL, UTA, 2020
+
+
+  C&P means cut and paste only those relevant lines from your program(s) into this quiz.
+
+
+ 1.  I understand that I am on my honor during this quiz, I will not collaborate, use 
+     non-allowed sources, and I will not discuss or share this quiz with anyone for the next 
+     12 hours.
+     You MAY: use Google to search, use previous source code, 
+     YOU MAY NOT use:
+     Email, Facebook, Hangouts, IM, chats, Skype or ANY other human connection.
+
+     This is a timed test. Late tests will have points deducted for being late.
+     Very late tests will not be graded.
+
+     When you are complete, with any part, please send the link, raise your hand, so we may visually inspect that part.
+
+     The second part of the test, you should electronically submit, you will need to copy and paste 
+     only those lines of code to implement that part of the test, usually a few (two to eight) lines of code. 
+     Place it immediately after the question.
+
+     Submit this Quiz (renamed) with code cut and pasted, ONLY text. DO NOT submit zips, binaries, libraries,
+     or anything other than text.
+
+     When any parts(questions) are complete complete, submit this test, you may make multiple submissions.
+
+     If you have computer, or other, problems, please raise your hand immediately.
+
+     If you understand and agree, please initial here: SPP
+     _________________
+
+ 2. Get files from this same folder.
+   
+ 3. Name your program/submission with your name and last digits of your ID.
+
+ 4a. Using the cloud services provider, all functionality possible should be implemented on that provider.
+     (Of course, displaying web pages through a browser and the user interface is "local")
+
+ 4b. Upload all data files (*jpg and *csv, not this quiz) to cloud service. 
+  
+Show and submit code, when each part is complete, raise your hand and then show us:
+
+ To recieve credit you MUST show (demo) AND submit the code (text only) on Canvas.
+
+ 5. Show a web page and interface (which resides on the cloud provider) with your name,
+    and below that "b.jpg" and below that student ID.
+    For all questions after this one, on the top of each page, please show your name, 
+    then below that your ID.
+    Please use a large font.
+    The cloud service provider is IBM Cloud (BlueMix).
+	
+	
+ANS) 
+
+<h1>Sai Pranathi Polisetti</h1>
+
+<br>
+
+<p>b.jpg</p>
+<table>
+	<tr>
+	</tr>
+
+{% for item in result %}
+	<tr>
+
+	{% if item["Key"] == "b.jpg" %}
+		<img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{item['Key']}}  height="200px">
+	{% endif %}
+
+	</tr>
+{% endfor %}
+</table>
+
+<h1>1001728199</h1>
+
+
+@app.route('/list_pics_img', methods=["GET"])
+def list_pics_img():
+    # sending get request and saving the response as response object 
+    data = requests.get(base_url)
+    parse_dict = xmltodict.parse(data.text)
+    image_data = parse_dict["ListBucketResult"]["Contents"]
+#     
+    return render_template('list_pics_img.html', result=image_data)
+
+ 6. Please show a web interface that allows a user to enter two numerical, integer values. Then add those values
+    and display the result on a web page.
+ANS)	
+<h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="add" method="post">
+	<label>Enter first number</label>
+	<input type="number" name="first" value="">
+	<br>
+	<label>Enter econd number in </label>
+	<input type="number" name="second" value="">
+	<br>
+	<input type="submit" name="update_data" value="Add Values">
+</form>
+<table>
+
+{% if result == "not valid" %}
+	<td> Check inputs!!!.. Nothing to display</td>
+{% else %}
+	<p>{{result}}</p>
+{% endif %}
+
+</table>
+
+@app.route('/add', methods=["GET"])
+def add():
+    ret = [];
+    return render_template('add.html', result=ret)
+  
+ # search by name functi
+@app.route('/add', methods=["POST"])
+def add_name():
+    name = (request.form["first"])        
+    keyword = (request.form["second"])
+    
+    if name == "" or keyword == "":
+        obj = "not valid"
+        return render_template('add.html', result=obj)
+    
+    obj = int(name) + int(keyword)
+   
+    return render_template('add.html', result=obj)
+
+	
+	
+
+ 7. (Web Page) allow a user to give a state and you show all the names, pictures, and captions of ALL people in that state.
+ 
+ ANS)
+ 
+ <h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="display_details_state" method="post">
+	<label>Enter name of state</label>
+	<input type="name" name="first" value="">
+	<br>
+	<input type="submit" name="update_data" value="View details">
+</form>
+<table>
+
+{% if result == 0 %}
+	<td> Check inputs.. Nothing to display</td>
+{% else %}
+	{% for item in result["list"] %}
+	<tr>
+		<td>{{ item["NAME"] }}</td>
+		<td>{{ item["CAPTION"] }}</td>
+		{% if item["PICTURE"] != None %}
+			<td><img src={{ "http://s3.us-east.cloud-object-storage.appdomain.cloud/adb-sum/" }}{{item['PICTURE']}}  height="200px"></td>
+		{% else %}
+			<td>No image to display for this name</td>
+		{% endif %}
+	</tr>
+	{% endfor %}
+{% endif %}
+
+</table>
+
+
+
+@app.route('/display_details_state', methods=["GET"])
+def display_details_state():
+    ret = [];
+    return render_template('display_details_state.html', result=ret)
+  
+ # search by name functi
+@app.route('/display_details_state', methods=["POST"])
+def display_details_state_name():
+    name = str(request.form["first"])        
+    
+    if name == "" :
+        obj = 0
+        return render_template('display_details_state.html', result=obj)
+
+    sql = " select * from name where STATE= ?"
+    stmt = ibm_db.prepare(connect.connection, sql)
+
+    ibm_db.bind_param(stmt, 1, name)
+
+    result = ibm_db.execute(stmt)
+    
+    ret = []
+    result_dict = ibm_db.fetch_assoc(stmt)
+    
+    while result_dict is not False:
+        ret.append(result_dict)
+        result_dict = ibm_db.fetch_assoc(stmt)
+        
+    data = requests.get(base_url)
+    parse_dict = xmltodict.parse(data.text)
+    image_data = parse_dict["ListBucketResult"]["Contents"]
+    
+    img_lt = []
+    for data in image_data:
+        img_lt.append(data["Key"])
+    
+    if ret is not False:
+        for key in ret:
+            if key["PICTURE"] not in img_lt:
+                key["PICTURE"] = None
+        
+    obj = {}
+    obj['list'] = ret
+ 
+    
+    if name is "":
+        obj = 0
+        
+
+    return render_template('display_details_state.html', result=obj)
+	
+	
+
+ 8. (Web Page) allow a user to give a Name (first column), and allow a user to change the State and Caption (last column).
+ ANS)
+ <h1>Sai Pranathi Polisetti</h1>
+<h1>1001728199</h1>
+<br>
+
+<form action="update_details_given_name" method="post">
+	<label>Enter the Name for which updation is required</label>
+	<input type="" name="name" value="">
+	<br>
+	<label>Enter the new state</label>
+	<input type="text" name="state">
+	<br>
+	<label>Enter the new caption</label>
+	<input type="text" name="caption">
+	<br>
+	<input type="submit" name="update_keyword" value="Update details">
+</form>
+
+
+<br>
+
+{% if result == 0 %}
+	<h4>No update!!! Check inputs</h4>
+{% else %}
+	<h4>Update Successful</h4>
+{% endif %}
+
+
+@app.route('/update_details_given_name', methods=["GET"])
+def update_details_given_name():
+    ret = [];
+    return render_template('update_details_given_name.html', result=ret)
+  
+# search by name function
+@app.route('/update_details_given_name', methods=["POST"])
+def update_details_given_name_name():
+    name = str(request.form["name"])        
+    state = str(request.form["state"])
+    caption = str(request.form["caption"])
+    
+    if name == "" or state == "" or caption == "":
+        result = 0
+        return render_template('update_details_given_name.html', result=result)
+        
+  
+    sql = "UPDATE name SET STATE = ?, CAPTION = ? WHERE  NAME=?"
+    stmt = ibm_db.prepare(connect.connection, sql)
+  
+    ibm_db.bind_param(stmt, 1, state)
+    ibm_db.bind_param(stmt, 2, caption)
+    ibm_db.bind_param(stmt, 3, name)
+      
+    result = ibm_db.execute(stmt)
+      
+    result = ibm_db.num_rows(stmt)
+    
+    print(result)
+      
+    return render_template('update_details_given_name.html', result=result)
+	
+	
+ 9. Show us, in a link, the application running and we will try it out. Only for parts 5, 6, 7, 8
+ http://asignment1-fantastic-turtle-bi.mybluemix.net/
+
+ 10. When complete, return (send) this quiz
+     If you finish early, send this immediately, otherwise send between
+     the end of class and no more than 1 minute after that.
+
